@@ -3,6 +3,14 @@
 <head>
     <meta charset="utf-8">
     <linl rel="stylesheet" href="static/css/design.css">
+        <style type="text/css">
+            table, td, th {
+                border: solid black 1px;
+            }
+            table {
+                width:200
+            }
+        </style>
     <title>    
         社員情報一覧　トップ
     </title>
@@ -11,10 +19,36 @@
     <h1 class="headline">社員情報サイト</h1>
 </header>
 <body>
-    <h1>社員一覧</h1>
+    <p>社員一覧</p>
+    
+    <table>
+    <tr>
+        <th>社員ID</th>
+        <th>名前</th>
+    </tr>
+
+    {% for item in infomation %}
+    <tr>
+        <td>{{ item.employee_id }}</td>
+        <td>{{ item.employee_name }}</td>
+        <form>
+            <td>
+                <button type="submit" name="change_infomation">編集</button>
+            </td>
+        </form>
+        <form>
+            <td>
+                <button type="submit" name="delete_infomation">削除</button>
+            </td>
+        </form>
+    </tr>
+    {% endfor %}
+    </table>
+    
+
     <!-- 新規追加ボタン -->
     <form method="post">
-        <button type="submit" name="add">新規追加</button>
+        <button type="submit" name="add_new_employee">新規追加</button>
     </form>
     <!-- 検索ボタン -->
     <form method="post">
@@ -22,7 +56,7 @@
     </form>
     <!-- csvファイルに出力ボタン -->
     <form method="post">
-        <button type="submit" name="output_to_csv">検索</button>
+        <button type="submit" name="output_to_csv">csvに出力</button>
     </form>        
 </body>
 

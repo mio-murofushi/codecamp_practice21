@@ -2,9 +2,17 @@ from flask import Flask, render_template, request
 import mysql.connector
 from mysql.connector import errorcode
 import model.database as db
+from model.item import Item
 
 app= Flask(__name__)
+infomation=[]
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/")
 def employee_top():
-    return render_template("employee_top.html")
+    infomation = db.get_infomation()
+
+    params ={
+        "infomation" : infomation
+    }
+
+    return render_template("employee_top.html", **params)

@@ -5,10 +5,10 @@ from model.item import Item
 
 def get_db_cursor():
     cnx = mysql.connector.connect(
-                    user=DB["DB_USER_NAME"],
-                    password=DB["DB_PASSWORD"],
-                    host=DB["DB_HOST"],
-                    database=DB["DB_NAME"])
+        user=DB["DB_USER_NAME"],
+        password=DB["DB_PASSWORD"],
+        host=DB["DB_HOST"],
+        database=DB["DB_NAME"])
     return cnx, cnx.cursor()
 
 def get_infomation():

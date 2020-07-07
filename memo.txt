@@ -1,0 +1,12 @@
+▷▶︎社員情報管理ツール作成
+
+▷現在の状況
+・employee_top.htmlの表示のみ完了。
+
+▷できていないこと
+・cssの読み込み
+・mysqlの読み込みができていない？（エラーコード）
+
+
+# sql構文確認用
+SELECT employee_id, employee_name FROM employee_infomation

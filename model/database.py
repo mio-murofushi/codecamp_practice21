@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import errorcode
-from const import DB
+from model.const import DB
 from model.item import Item
 
 def get_db_cursor():

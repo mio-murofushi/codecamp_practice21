@@ -20,3 +20,7 @@ def employee_top():
 @app.route("/search")
 def search_employee():
     return render_template("search_employee.html")
+
+@app.route("/search/")
+def search_manegiment_employee():
+    return render_template("search_manegiment_employee.html")

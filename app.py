@@ -16,3 +16,7 @@ def employee_top():
     }
 
     return render_template("employee_top.html", **params)
+
+@app.route("/search")
+def search_employee():
+    return render_template("search_employee.html")

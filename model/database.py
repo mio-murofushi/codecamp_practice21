@@ -1,7 +1,9 @@
 import mysql.connector
 from mysql.connector import errorcode
 from model.const import DB
-from model.item import Item
+from model.employee import Employee
+from model.department import Department
+from model.photo import  Photo
 
 def get_db_cursor():
     cnx = mysql.connector.connect(
@@ -27,8 +29,8 @@ def get_employee_infomation():
         cursor.execute(query)
 
         for (employee_id, employee_name) in cursor:
-            item = Item(employee_id, employee_name)
-            employee_infomation.append(item)
+            employee = Employee(employee_id, employee_name)
+            employee_infomation.append(employee)
 
     except mysql.connector.Error as err:
         printerror(err)
@@ -45,7 +47,7 @@ def get_department_infomation():
         cursor.execute(get_department_query)
         
         for (department_id, department_name) in cursor:
-            department_info = Item(department_id, department_name)
+            department_info = Department(department_id, department_name)
             department_infomation.append(department_info)
 
     except mysql.connector.Error as err:

@@ -1,5 +1,4 @@
-
-class Item:
+class Employee:
     """    
     商品の各属性値を保持する。
 
@@ -21,12 +20,9 @@ class Item:
         社員の住所
     department_id : str
         所属している部署No.
-    photo_name : str
-        社員の写真ファイルネーム
-    department_name : str
-        部署名
     """
-    def __init__(self, id="", employee_id="", employee_name="", employee_age="", gender="", photo_id="", adress="", department_id="", photo_name="",department_name=""):
+    
+    def __init__(self, id="", employee_id="", employee_name="", employee_age="", gender="", photo_id="", adress="", department_id=""):
         self.id = id
         self.employee_id = employee_id
         self.employee_name = employee_name
@@ -35,5 +31,3 @@ class Item:
         self.photo_id = photo_id
         self.adress = adress
         self.department_id = department_id
-        self.department_name = department_name
-        self.photo_name = photo_name

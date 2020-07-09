@@ -2,7 +2,9 @@ from flask import Flask, render_template, request
 import mysql.connector
 from mysql.connector import errorcode
 import model.database as db
-from model.item import Item
+from model.employee import Employee
+from model.department import Department
+from model.photo import  Photo
 
 app= Flask(__name__)
 employee_infomation=[]

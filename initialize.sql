@@ -1,7 +1,7 @@
 -- 社員管理ツール　テーブル作成
 
 -- 社員情報テーブル作成
-CREATE TABLE employee_infomation(
+CREATE TABLE employee_employee_infomation(
     id INT AUTO_INCREMENT,
     employee_id VARCHAR(100),
     employee_name VARCHAR(100),
@@ -28,7 +28,7 @@ CREATE TABLE department(
 );
 
 -- 初期テーブル情報の入力
-INSERT INTO employee_infomation(
+INSERT INTO employee_employee_infomation(
     employee_id,employee_name,employee_age,gender,photo_id,adress,department_id
 ) VALUES
 ( "EMP0001", "山田太郎", 35, "男", "P00001", "〒100-1000 東京都千代田区", "D01"),

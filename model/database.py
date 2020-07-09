@@ -11,8 +11,16 @@ def get_db_cursor():
         database=DB["DB_NAME"])
     return cnx, cnx.cursor()
 
-def get_infomation():
-    infomation = []
+def printerror(err):
+    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+        print("ユーザ名かパスワードに問題があります。")
+    elif err.errno == errorcode.ER_BAD_DB_ERROR:
+        print("データベースが存在しません。")
+    else:
+        print(err)
+
+def get_employee_infomation():
+    employee_infomation = []
     try:
         cnx, cursor = get_db_cursor()
         query=("SELECT employee_id, employee_name FROM employee_infomation")
@@ -20,17 +28,12 @@ def get_infomation():
 
         for (employee_id, employee_name) in cursor:
             item = Item(employee_id, employee_name)
-            infomation.append(item)
+            employee_infomation.append(item)
 
     except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("ユーザ名かパスワードに問題があります。")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("データベースが存在しません。")
-        else:
-            print(err)
+        printerror(err)
     else:
         # DB切断
         cnx.close()
     
-    return infomation
+    return employee_infomation

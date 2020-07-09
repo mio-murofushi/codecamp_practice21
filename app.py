@@ -5,14 +5,14 @@ import model.database as db
 from model.item import Item
 
 app= Flask(__name__)
-infomation=[]
+employee_infomation=[]
 
 @app.route("/")
 def employee_top():
-    infomation = db.get_infomation()
+    employee_infomation = db.get_employee_infomation()
 
     params ={
-        "infomation" : infomation
+        "employee_infomation" : employee_infomation
     }
 
     return render_template("employee_top.html", **params)
@@ -27,5 +27,5 @@ def search_managiment_employee():
 
 # search employee.htmlの表示用
 @app.route("/search/managiment")
-def fix_employee_infomation():
+def fix_employee_employee_infomation():
     return render_template("fix_employee.html")

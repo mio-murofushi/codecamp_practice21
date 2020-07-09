@@ -9,4 +9,4 @@
 
 
 # sql構文確認用
-SELECT employee_id, employee_name FROM employee_infomation
+SELECT employee_id, employee_name FROM employee_employee_infomation

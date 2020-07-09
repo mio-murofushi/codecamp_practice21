@@ -27,18 +27,18 @@
         <th>名前</th>
     </tr>
 
-    {% for item in infomation %}
+    {% for item in employee_infomation %}
     <tr>
         <td>{{ item.employee_id }}</td>
         <td>{{ item.employee_name }}</td>
         <form>
             <td>
-                <button type="submit" name="change_infomation">編集</button>
+                <button type="submit" name="change_employee_infomation">編集</button>
             </td>
         </form>
         <form>
             <td>
-                <button type="submit" name="delete_infomation">削除</button>
+                <button type="submit" name="delete_employee_infomation">削除</button>
             </td>
         </form>
     </tr>

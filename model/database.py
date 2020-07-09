@@ -42,11 +42,11 @@ def get_department_infomation():
     try:
         cnx, cursor = get_db_cursor()
         get_department_query = ("SELECT department_id, department_name FROM department")
-        cursor.excute(get_department_query)
+        cursor.execute(get_department_query)
         
         for (department_id, department_name) in cursor:
-            item = Item(department_id, department_name)
-            department_infomation.append(item)
+            department_info = Item(department_id, department_name)
+            department_infomation.append(department_info)
 
     except mysql.connector.Error as err:
         printerror(err)

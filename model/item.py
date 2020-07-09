@@ -5,6 +5,8 @@ class Item:
 
     Attributes
     ----------
+    id : int
+        自動生成の番号
     employee_id : str
         社員番号
     employee_name : str
@@ -24,7 +26,8 @@ class Item:
     department_name : str
         部署名
     """
-    def __init__(self, employee_id="", employee_name="", employee_age="", gender="", photo_id="", adress="", department_id="", photo_name="",department_name=""):
+    def __init__(self, id="", employee_id="", employee_name="", employee_age="", gender="", photo_id="", adress="", department_id="", photo_name="",department_name=""):
+        self.id = id
         self.employee_id = employee_id
         self.employee_name = employee_name
         self.employee_age = employee_age

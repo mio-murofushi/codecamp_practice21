@@ -19,7 +19,12 @@
                 <th>ID</th>
                 <th>部署名</th>
             </tr>
-            {% for %}
+            {% for item in department_infomation%}
+            <tr>
+                <td>{{ item.department_id }}</td>
+                <td>{{ item.department_name }}</td>
+            </tr>
+            {% endfor %}
         </table>
     </body>
 </html>

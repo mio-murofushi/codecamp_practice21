@@ -10,3 +10,6 @@
 
 # sql構文確認用
 SELECT employee_id, employee_name FROM employee_employee_infomation
+
+# カラム定義の変更
+ALTER TABLE department MODIFY department_id INT AUTO_INCREMENT;

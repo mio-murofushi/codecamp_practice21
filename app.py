@@ -29,3 +29,11 @@ def search_managiment_employee():
 @app.route("/search/managiment")
 def fix_employee_employee_infomation():
     return render_template("fix_employee.html")
+
+@app.route("/department")
+def department_top():
+    department_infomation = db.get_department_infomation()
+    params = {
+        "department_infomation" : department_infomation
+    }
+    return render_template("department_top.html", **params)

@@ -23,6 +23,16 @@
             <tr>
                 <td>{{ department_info.department_id }}</td>
                 <td>{{ department_info.department_name }}</td>
+                <form>
+                    <td>
+                        <button type="submit" name="change_department">編集</button>
+                    </td>
+                </form>
+                <form>
+                    <td>
+                        <button type="submit" name="delete_department">削除</button>
+                    </td>
+                </form>
             </tr>
             {% endfor %}
         </table>

@@ -21,6 +21,11 @@ def employee_top():
 def search_employee():
     return render_template("search_employee.html")
 
-@app.route("/search/")
-def search_manegiment_employee():
-    return render_template("search_manegiment_employee.html")
+@app.route("/search/result")
+def search_managiment_employee():
+    return render_template("search_managiment_employee.html")
+
+# search employee.htmlの表示用
+@app.route("/search/managiment")
+def fix_employee_infomation():
+    return render_template("fix_employee.html")

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>社員データの修正</title>
+    </head>
+    <body>
+        <h1>社員データを修正します</h1>
+        <form method="post" enctype="multipart/form-data">
+            社員ID:<input name=new_employee_id>
+            <br>名前：<input name=new_employee_name>
+            <br>年齢：<input name=new_employee_age>
+            <br>性別：
+            <input type="radio" name="gender" value="male">男性
+            <input type="radio" name="gender" value="female">女性
+            <br>写真：
+            <br><input type="file" name="file_name">
+            <br>郵便番号<input name=new_postalcode>
+            <br>都道府県
+            <select value="new_prefectures">
+            <!-- 都道府県をlist化してfor文で -->
+                <option value="営業">営業</option>
+            </select>
+            <br>住所：<input name=new_adress>
+            <select value="new_department">
+                <!-- 部署をlist化してfor文で -->
+                <option value="営業">営業</option>
+            </select>
+            <br>入社日:<input name="join_date">
+            <br>退社日：<input name="leave_date">
+            <br><button type="submit" value="add_new_employee_infomation">設定</button>
+            <button type="button" onclick="history.back()">戻る</button>
+        </form>
+    </body>
+</html>

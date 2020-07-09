@@ -29,7 +29,7 @@ def get_employee_infomation():
         cursor.execute(query)
 
         for (employee_id, employee_name) in cursor:
-            employee = Employee(employee_id, employee_name)
+            employee = Employee(employee_id = employee_id, employee_name = employee_name)
             employee_infomation.append(employee)
 
     except mysql.connector.Error as err:
@@ -46,8 +46,8 @@ def get_department_infomation():
         get_department_query = ("SELECT department_id, department_name FROM department")
         cursor.execute(get_department_query)
         
-        for (department_id, department_name) in cursor:
-            department_info = Department(department_id, department_name)
+        for (department_name, department_id) in cursor:
+            department_info = Department(department_name=department_name,department_id=department_id)
             department_infomation.append(department_info)
 
     except mysql.connector.Error as err:

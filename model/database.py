@@ -59,6 +59,6 @@ def get_department_infomation():
 
 def delete_employee_info(delete_id):
     cnx, cursor = get_db_cursor()
-    delete_query = "DELETE FROM employee_infomation WHERE id = '{delete_id}'"
+    delete_query = F"DELETE FROM employee_infomation WHERE id = {delete_id}"
     cursor.execute(delete_query)
     return "削除しました"

@@ -29,7 +29,7 @@ def delete_employee():
     change_infomation, delete_id="",""
     del_mes = ""
 
-    if "change_infomation" in request.form.keys():
+    if "delete_infomation" in request.form.keys():
         delete_id = request.form.get("delete_id")
         del_mes = db.delete_employee_info(delete_id)
 

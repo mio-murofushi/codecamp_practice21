@@ -57,7 +57,7 @@ def get_department_infomation():
     
     return department_infomation
 
-def delete_employee(delete_id):
+def delete_employee_info(delete_id):
     cnx, cursor = get_db_cursor()
     delete_query = "DELETE FROM employee_infomation WHERE id = '{delete_id}'"
     cursor.execute(delete_query)

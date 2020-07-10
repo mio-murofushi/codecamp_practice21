@@ -16,9 +16,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route("/", methods=["POST","GET"])
 def employee_top():
     employee_infomation = db.get_employee_infomation()
+    del_mes = ""
 
     params ={
-        "employee_infomation" : employee_infomation
+        "employee_infomation" : employee_infomation,
+        "del_mes" : del_mes
     }
     return render_template("employee_top.html", **params)
 
@@ -29,10 +31,9 @@ def delete_employee():
 
     if "change_infomation" in request.form.keys():
         delete_id = request.form.get("delete_id")
-        del_mes = db.delete_employee(delete_id)
+        del_mes = db.delete_employee_info(delete_id)
 
-    #return redirect(url_for(''), del_mes=del_mes)
-    return redirect(url_for('', del_mes=del_mes))
+    return redirect(url_for('employee_top', del_mes=del_mes))
 
 @app.route("/search", methods=["POST", "GET"])
 def search_employee():

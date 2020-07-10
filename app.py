@@ -31,7 +31,8 @@ def delete_employee():
         delete_id = request.form.get("delete_id")
         del_mes = db.delete_employee(delete_id)
 
-    return redirect(url_for('/', del_mes=del_mes))
+    #return redirect(url_for(''), del_mes=del_mes)
+    return redirect(url_for('', del_mes=del_mes))
 
 @app.route("/search", methods=["POST", "GET"])
 def search_employee():

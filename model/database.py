@@ -25,11 +25,11 @@ def get_employee_infomation():
     employee_infomation = []
     try:
         cnx, cursor = get_db_cursor()
-        query=("SELECT employee_id, employee_name FROM employee_infomation")
+        query=("SELECT id, employee_id, employee_name FROM employee_infomation")
         cursor.execute(query)
 
-        for (employee_id, employee_name) in cursor:
-            employee = Employee(employee_id = employee_id, employee_name = employee_name)
+        for (id, employee_id, employee_name) in cursor:
+            employee = Employee( id=id, employee_id = employee_id, employee_name = employee_name)
             employee_infomation.append(employee)
 
     except mysql.connector.Error as err:
@@ -56,3 +56,9 @@ def get_department_infomation():
         cnx.close()
     
     return department_infomation
+
+def delete_employee(delete_id):
+    cnx, cursor = get_db_cursor()
+    delete_query = "DELETE FROM employee_infomation WHERE id = '{delete_id}'"
+    cursor.execute(delete_query)
+    return "削除しました"

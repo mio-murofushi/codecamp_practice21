@@ -4,12 +4,13 @@
 ・employee_top.htmlの表示のみ完了。
 
 ▷できていないこと
-・cssの読み込み
-・mysqlの読み込みができていない？（エラーコード）
-
+・cssファイルを作成した
 
 # sql構文確認用
-SELECT employee_id, employee_name FROM employee_employee_infomation
+SELECT employee_id, employee_name FROM employee_infomation
 
 # カラム定義の変更
 ALTER TABLE department MODIFY department_id INT AUTO_INCREMENT;
+
+# 社員情報の削除
+DELETE FROM employee_infomation WHERE id = "{id}"

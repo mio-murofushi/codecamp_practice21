@@ -20,6 +20,10 @@
     <header>
     <h1 class="headline">社員情報サイト</h1>
     </header>
+    {% if del_mes %}
+        <p>{{ del_mes }}</p>
+    {% endif %}
+
     <p>社員一覧</p>
     
     <table>
@@ -32,13 +36,14 @@
     <tr>
         <td>{{ employee.employee_id }}</td>
         <td>{{ employee.employee_name }}</td>
-        <form>
+        <form method="post">
             <td>
                 <button type="submit" name="change_infomation">編集</button>
             </td>
         </form>
-        <form>
+        <form method="post" action="/delete">
             <td>
+                <input type="hidden" name="delete_id" value='{{employee.id}}'>
                 <button type="submit" name="delete_infomation">削除</button>
             </td>
         </form>

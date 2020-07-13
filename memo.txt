@@ -14,3 +14,6 @@ ALTER TABLE department MODIFY department_id INT AUTO_INCREMENT;
 
 # 社員情報の削除
 DELETE FROM employee_infomation WHERE id = "{id}"
+
+# 部署情報の取得　一番最後に登録した情報の取得
+SELECT * FROM department ORDER BY department_id DESC LIMIT 1;

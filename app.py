@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
+import re
 from mysql.connector import errorcode
 import model.database as db
 from model.employee import Employee
@@ -48,10 +49,25 @@ def search_managiment_employee():
 def fix_employee_infomation():
     return render_template("fix_employee.html")
 
-@app.route("/department")
+@app.route("/department", methods=["GET", "POST"])
 def department_top():
     department_infomation = db.get_department_infomation()
     params = {
         "department_infomation" : department_infomation
     }
     return render_template("department_top.html", **params)
+
+# 新規部署の追加
+@app.route("/department/add", methods=["GET", "POST"])
+def add_department():
+    new_department_name=""
+
+    if "add_new_department_name" in request.form.keys():
+        new_department_name = request.form.get("new_department_name")
+
+    db.add_department_info(new_department_name)
+    return render_template("add_new_department.html")
+
+@app.route("/department/add/result", methods=["GET", "POST"])
+def result_add_department():
+    return render_template("result.html")

@@ -1,4 +1,5 @@
 import mysql.connector
+import re
 from mysql.connector import errorcode
 from model.const import DB
 from model.employee import Employee
@@ -62,3 +63,35 @@ def delete_employee_info(delete_id):
     delete_query = F"DELETE FROM employee_infomation WHERE id = {delete_id}"
     cursor.execute(delete_query)
     return "削除しました"
+
+# 新規部署情報追加
+def add_department_info(new_department_name):
+    department_new_infomation=[]
+
+    try:
+        cnx, cursor = get_db_cursor()
+        get_department_new_info = ("SELECT * FROM department ORDER BY department_id DESC LIMIT 1")
+        cursor.execute(get_department_new_info)
+
+        for (department_id, department_name) in cursor:
+            department_new_info = Department(department_name=department_name,department_id=department_id)
+            department_new_infomation.append(department_new_info)
+
+        new_department_id = check_new_department_id(department_id)
+        add_department_query = F"INSERT INTO department (department_id, department_name) VALUES ({new_department_id},'{new_department_name}')"
+        cursor.execute(add_department_query)
+
+    except mysql.connector.Error as err:
+        printerror(err)
+    else:
+        cnx.close()
+
+# 新規部署idを決定
+def check_new_department_id(department_id):
+    max_number = re.sub("\\D", "", department_id)
+    new_number = int(max_number) + 1
+    
+    if new_number <10:
+        new_number = "0" + str(new_number)
+    
+    return new_number

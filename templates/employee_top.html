@@ -18,13 +18,13 @@
 
 <body>
     <header>
-    <h1 class="headline">社員情報サイト</h1>
+        <h1 class="headline">社員情報サイト</h1>
     </header>
     {% if del_mes %}
         <p>{{ del_mes }}</p>
     {% endif %}
 
-    <p>社員一覧</p>
+    <p class="title">社員一覧</p>
     
     <table>
     <tr>
@@ -36,7 +36,7 @@
     <tr>
         <td>{{ employee.employee_id }}</td>
         <td>{{ employee.employee_name }}</td>
-        <form method="post">
+        <form method="post" action="/fix_employee">
             <td>
                 <button type="submit" name="change_infomation">編集</button>
             </td>

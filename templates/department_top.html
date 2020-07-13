@@ -13,6 +13,9 @@
         </style>
     </head>
     <body>
+        <header>
+            <h1>部署一覧管理ページ</h1>
+        </header>
         <p>部署一覧</p>
         <table>
             <tr>
@@ -33,8 +36,12 @@
                         <button type="submit" name="delete_department">削除</button>
                     </td>
                 </form>
+
             </tr>
             {% endfor %}
         </table>
+        <form method="post" action="/department/add">
+            <button type="submit">新規作成</button>
+        </form>
     </body>
 </html>

@@ -31,12 +31,12 @@
                         <button type="submit" name="change_department">編集</button>
                     </td>
                 </form>
-                <form>
-                    <td>
-                        <button type="submit" name="delete_department">削除</button>
-                    </td>
+                <td>
+                <form method="post" action="/delete_department_info">
+                    <input type="hidden" name="delete_department_id" value='{{department_info.department_id}}'>
+                    <button type="submit" name="delete_department">削除</button>
                 </form>
-
+                </td>
             </tr>
             {% endfor %}
         </table>

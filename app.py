@@ -19,20 +19,21 @@ def employee_top():
     employee_infomation = db.get_employee_infomation()
     del_mes = ""
 
-    params ={
+    params = {
         "employee_infomation" : employee_infomation,
         "del_mes" : del_mes
     }
     return render_template("employee_top.html", **params)
 
-@app.route("/delete", methods=["POST", "GET"])
+# 社員情報の削除
+@app.route("/delete_employee_info", methods=["POST", "GET"])
 def delete_employee():
-    change_infomation, delete_id="",""
+    delete_employee_id=""
     del_mes = ""
 
     if "delete_infomation" in request.form.keys():
-        delete_id = request.form.get("delete_id")
-        del_mes = db.delete_employee_info(delete_id)
+        delete_employee_id = request.form.get("delete_employee_id")
+        del_mes = db.delete_employee_info(delete_employee_id)
 
     return redirect(url_for('employee_top', del_mes=del_mes))
 
@@ -51,9 +52,11 @@ def fix_employee_infomation():
 
 @app.route("/department", methods=["GET", "POST"])
 def department_top():
+    del_mes=""
     department_infomation = db.get_department_infomation()
     params = {
-        "department_infomation" : department_infomation
+        "department_infomation" : department_infomation,
+        "del_mes": del_mes
     }
     return render_template("department_top.html", **params)
 
@@ -64,10 +67,19 @@ def add_department():
 
     if "add_new_department_name" in request.form.keys():
         new_department_name = request.form.get("new_department_name")
-
-    db.add_department_info(new_department_name)
+        db.add_department_info(new_department_name)
+        return render_template("result.html")
+    
     return render_template("add_new_department.html")
 
-@app.route("/department/add/result", methods=["GET", "POST"])
-def result_add_department():
-    return render_template("result.html")
+# 部署情報の削除
+@app.route("/delete_department_info", methods=["GET", "POST"])
+def delete_department():
+    delete_department_id=""
+    del_mes = ""
+
+    if "delete_department" in request.form.keys():
+        delete_department_id = request.form.get("delete_department_id")
+        del_mes = db.delete_department_info(delete_department_id)
+
+    return redirect(url_for('department_top', del_mes=del_mes))

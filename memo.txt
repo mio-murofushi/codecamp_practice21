@@ -17,3 +17,5 @@ DELETE FROM employee_infomation WHERE id = "{id}"
 
 # 部署情報の取得　一番最後に登録した情報の取得
 SELECT * FROM department ORDER BY department_id DESC LIMIT 1;
+
+INSERT INTO department (department_id, department_name) VALUES ('D03','TS部')

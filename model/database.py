@@ -83,6 +83,8 @@ def add_department_info(new_department_name):
         printerror(err)
     else:
         cnx.close()
+    
+    return "新規部署の登録が完了しました"
 
 # 新規部署idを決定
 def check_new_department_id(department_id):

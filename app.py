@@ -72,13 +72,13 @@ def department_top():
 # 新規部署の追加
 @app.route("/department/add", methods=["GET", "POST"])
 def add_department():
-    new_department_name=""
+    new_department_name, mes="",""
 
     if "add_new_department_name" in request.form.keys():
         new_department_name = request.form.get("new_department_name")
-        db.add_department_info(new_department_name)
-        return render_template("result.html")
-    
+        mes = db.add_department_info(new_department_name)
+        return redirect(url_for('department_top', mes=mes))
+        
     return render_template("add_new_department.html")
 
 # 既存部署の部署名変更

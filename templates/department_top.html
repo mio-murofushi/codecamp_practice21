@@ -26,8 +26,10 @@
             <tr>
                 <td>{{ department_info.department_id }}</td>
                 <td>{{ department_info.department_name }}</td>
-                <form>
+                <form method="POST">
                     <td>
+                        <input type="hidden" name="fix_department_id" value="{{department_info.department_id}}">
+                        <input type="hidden" name="fix_department_name" value="{{department_info.department_name}}">
                         <button type="submit" name="change_department">編集</button>
                     </td>
                 </form>

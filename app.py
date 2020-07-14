@@ -52,11 +52,20 @@ def fix_employee_infomation():
 
 @app.route("/department", methods=["GET", "POST"])
 def department_top():
-    del_mes=""
+    mes=""
     department_infomation = db.get_department_infomation()
+
+    if "change_department" in request.form.keys():
+        fix_department_id = request.form.get("fix_department_id")
+        fix_department_name = request.form.get("fix_department_name")
+        params = {
+            "fix_department_id":fix_department_id,
+            "fix_department_name":fix_department_name
+            }
+        return render_template("fix_department.html", **params)
     params = {
         "department_infomation" : department_infomation,
-        "del_mes": del_mes
+        "mes": mes
     }
     return render_template("department_top.html", **params)
 
@@ -71,6 +80,17 @@ def add_department():
         return render_template("result.html")
     
     return render_template("add_new_department.html")
+
+# 既存部署の部署名変更
+@app.route("/department/fix", methods=["GET", "POST"])
+def fix_department_infomation():
+    department_rename, mes="",""
+    if "rename" in request.form.keys():
+        department_rename = request.form.get("department_rename")
+        fix_department_id = request.form.get("fix_department_id")
+        mes = db.fix_department_rename(fix_department_id, department_rename)
+    
+    return redirect(url_for('department_top', mes=mes))
 
 # 部署情報の削除
 @app.route("/delete_department_info", methods=["GET", "POST"])

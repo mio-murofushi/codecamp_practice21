@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            部署データ　編集
+        </title>
+    </head>
+    <body>
+        <h1>部署データの編集</h1>
+        <form method="POST" action="/department/fix">
+            <p>名前：<input name="department_rename" placeholder="{{fix_department_name}}"></p>
+            <input type="hidden" name="fix_department_id" value="{{fix_department_id}}">
+            <button type="submit" name="rename">設定</button>
+        </form>
+        <button type="button" onclick="history.back()">戻る</button>
+    </body>
+</html>

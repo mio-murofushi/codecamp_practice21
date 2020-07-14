@@ -4,7 +4,8 @@
 ・employee_top.htmlの表示のみ完了。
 
 ▷できていないこと
-・cssファイルを作成した
+・部署変更のデータベース変更が確認できていない。、
+・社員管理部分全体。
 
 # sql構文確認用
 SELECT employee_id, employee_name FROM employee_infomation
@@ -19,3 +20,11 @@ DELETE FROM employee_infomation WHERE id = "{id}"
 SELECT * FROM department ORDER BY department_id DESC LIMIT 1;
 
 INSERT INTO department (department_id, department_name) VALUES ('D03','TS部')
+
+
+        fix_department_id = request.form.get("fix_department_id")
+        fix_department_name = request.form.get("fix_department_name")
+        params = {
+            "fix_department_id":fix_department_id,
+            "fix_department_name":fix_department_name
+            }

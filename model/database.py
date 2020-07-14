@@ -102,3 +102,10 @@ def delete_department_info(delete_department_id):
     cursor.execute(delete_query)
     cnx.commit()
     return "削除"
+
+def fix_department_rename( fix_department_id, department_rename):
+    cnx, cursor = get_db_cursor()
+    rename_query = F"UPDATE department SET department_name = '{department_rename}' WHERE department_id = '{fix_department_id}'"
+    cursor.execute(rename_query)
+    cnx.commit()
+    return "追加完了"

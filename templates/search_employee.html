@@ -6,11 +6,12 @@
     </head>
     <body>
         <h1>条件を指定して社員情報を検索します。</h1>
-        <form>
-            <select value="search_department">
-                <!-- 新規に部署が追加する可能性が存在　-->
-                <!-- DBから呼び出す方が良い…！ -->
-                <option value="営業" name="営業">営業</option>
+        <form method="post">
+            <select name="search_department">
+                <option value="">部署を選択してください</option>
+                {% for department_info in department_infomation%}
+                    <option value="{{search_department_id}}">{{department_info.department_name}}</option>
+                {% endfor %}
             </select>
             <p>社員ID：<input name="search_employee_id"></p>
             <p>名前に含む文字：<input name="search_employee_name"></p>

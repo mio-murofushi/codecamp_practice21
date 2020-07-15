@@ -38,6 +38,7 @@
         <td>{{ employee.employee_name }}</td>
         <form method="post" action="/fix_employee">
             <td>
+                <input type="hidden" name="fix_employee_id" value="{{employee.employee_id}}">
                 <button type="submit" name="change_infomation">編集</button>
             </td>
         </form>
@@ -53,15 +54,15 @@
     
 
     <!-- 新規追加ボタン -->
-    <form>
+    <form method="POST", action="/fix_employee">
         <button type="submit" name="add_new_employee">新規追加</button>
     </form>
     <!-- 検索ボタン -->
-    <form action="search">
+    <form method="POST" action="/search">
         <button type="submit" name="research">検索</button>
     </form>
     <!-- csvファイルに出力ボタン -->
-    <form>
+    <form method="post">
         <button type="submit" name="output_to_csv">csvに出力</button>
     </form>        
 </body>

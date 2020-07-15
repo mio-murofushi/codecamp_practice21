@@ -37,19 +37,57 @@ def delete_employee():
 
     return redirect(url_for('employee_top', del_mes=del_mes))
 
+# 社員管理　検索画面
 @app.route("/search", methods=["POST", "GET"])
 def search_employee():
-    return render_template("search_employee.html")
+    department_infomation=[]
+    department_infomation = db.get_department_infomation()
+    get_search_employee_infomation(department_infomation)
+
+    params = {
+        "department_infomation":department_infomation
+    }
+    return render_template("search_employee.html", **params)
+
+# 検索情報の取得
+def get_search_employee_infomation(department_infomation):
+    search_department_name,search_employee_id, search_employee_name = "", "", ""
+    if "search" in request.form.keys():
+        search_department_name = request.form.get("search_department_name")
+        search_employee_id = request.form.get("search_employee_id")
+        search_employee_name = request.form.get("search_employee_name")
+        #check_search_employee_infomation(search_department_name, search_employee_id, search_employee_name)
+
+# 検索情報の
+"""
+def check_search_employee_infomation(search_department_name, search_employee_id, search_employee_name):
+"""
 
 @app.route("/search/result")
 def search_managiment_employee():
     return render_template("search_managiment_employee.html")
+
+# 社員情報の編集・新規登録の表示用
+@app.route("/fix_employee", methods=["GET","POST"])
+def add_new_employee_infomation():
+    fix_employee_id = ""
+    if "change_infomation" in request.form.keys():
+        fix_employee_id = request.form.get("fix_employee_id")
+    return render_template("fix_employee.html")
+
+# 社員情報の新規登録
+@app.route("/fix_employee/add", methods=["GET", "POST"])
+def add_new_employee():
+    #if "add_new_employee" in request.form.keys():
+        # 全要素取得
+    return redirect(url_for('employee_top'))
 
 # search employee.htmlの表示用
 @app.route("/search/managiment", methods=["POST","GET"])
 def fix_employee_infomation():
     return render_template("fix_employee.html")
 
+# 部署管理トップページ
 @app.route("/department", methods=["GET", "POST"])
 def department_top():
     mes=""

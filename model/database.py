@@ -22,6 +22,26 @@ def printerror(err):
     else:
         print(err)
 
+"""
+def get_all_employee_infomation():
+    all_employee_infomation = []
+    try:
+        cnx, cursor = get_db_cursor()
+        query="SELECT employee_infomation.employee_id, employee_infomation.employee_name, employee_infomation.employee_age, employee_infomation.gender, employee_infomation.photo_id, employee_infomation.adress, employee_infomation.department_id, department.department_name FROM employee_infomation LEFT OUTER JOIN department ON employee_infomation.department_id = department.department_id"
+        cursor.execute(query)
+
+        for (employee_infomation.employee_id, employee_infomation.employee_name, employee_infomation.employee_age, employee_infomation.gender, employee_infomation.photo_id, employee_infomation.adress, employee_infomation.department_id, department.department_name) in cursor:
+            employee = Employee(employee_id=employee_infomation.employee_id, employee_name=employee_name, employee_age=employee_age, gender=gender, photo_id=photo_id, adress=adress, department_id=department_id)
+            department = Department(department_id=department.department_id)
+            all_employee_infomation.append(employee)
+
+    except mysql.connector.Error as err:
+        printerror(err)
+    else:
+        cnx.close()
+    
+    return all_employee_infomation
+"""
 def get_employee_infomation():
     employee_infomation = []
     try:

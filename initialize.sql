@@ -10,6 +10,8 @@ CREATE TABLE employee_infomation(
     photo_id VARCHAR(100),
     adress VARCHAR(100),
     department_id VARCHAR(10),
+    join_date datetime,
+    leave_date datetime
     PRIMARY KEY (id)
 );
 
@@ -31,11 +33,11 @@ DELETE FROM employee_infomation:
 
 -- 初期テーブル情報の入力
 INSERT INTO employee_infomation(
-    employee_id,employee_name,employee_age,gender,photo_id,adress,department_id
+    employee_id,employee_name,employee_age,gender,photo_id,adress,department_id,join_date
 ) VALUES
-( "EMP0001", "山田太郎", 35, "男", "P00001", "〒100-1000 東京都千代田区", "D01"),
-( "EMP0002", "日本花子", 27, "女", "P00002", "〒200-2000 埼玉県さいたま市", "D02"),
-( "EMP0003", "東京次郎", 41, "男", "P00003", "〒300-3000 神奈川県川崎市", "D01");
+( "EMP0001", "山田太郎", 35, "男", "P00001", "〒100-1000 東京都千代田区", "D01", "2019-09-11"),
+( "EMP0002", "日本花子", 27, "女", "P00002", "〒200-2000 埼玉県さいたま市", "D02", "2010-10-01"),
+( "EMP0003", "東京次郎", 41, "男", "P00003", "〒300-3000 神奈川県川崎市", "D01", "2017-11-22");
 
 INSERT INTO ID_photo(
     photo_id, photo_name

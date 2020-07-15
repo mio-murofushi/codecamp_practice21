@@ -22,17 +22,17 @@ def printerror(err):
     else:
         print(err)
 
-"""
 def get_all_employee_infomation():
     all_employee_infomation = []
     try:
         cnx, cursor = get_db_cursor()
-        query="SELECT employee_infomation.employee_id, employee_infomation.employee_name, employee_infomation.employee_age, employee_infomation.gender, employee_infomation.photo_id, employee_infomation.adress, employee_infomation.department_id, department.department_name FROM employee_infomation LEFT OUTER JOIN department ON employee_infomation.department_id = department.department_id"
+        query="SELECT employee_infomation.employee_id, employee_infomation.employee_name, employee_infomation.employee_age, employee_infomation.gender, employee_infomation.photo_id, employee_infomation.adress, employee_infomation.department_id, department.department_name, ID_photo.photo_name FROM employee_infomation JOIN department ON employee_infomation.department_id = department.department_id JOIN ID_photo ON employee_infomation.photo_id = ID_photo.photo_id"
         cursor.execute(query)
 
-        for (employee_infomation.employee_id, employee_infomation.employee_name, employee_infomation.employee_age, employee_infomation.gender, employee_infomation.photo_id, employee_infomation.adress, employee_infomation.department_id, department.department_name) in cursor:
-            employee = Employee(employee_id=employee_infomation.employee_id, employee_name=employee_name, employee_age=employee_age, gender=gender, photo_id=photo_id, adress=adress, department_id=department_id)
-            department = Department(department_id=department.department_id)
+        for (employee_id, employee_name, employee_age, gender, photo_id, adress, department_id, department_name, photo_name) in cursor:
+            employee = Employee(employee_id=employee_id, employee_name=employee_name, employee_age=employee_age, gender=gender, photo_id=photo_id, adress=adress, department_id=department_id)
+            department = Department(department_id=department_id)
+            photo = Photo(photo_name=photo_name)
             all_employee_infomation.append(employee)
 
     except mysql.connector.Error as err:
@@ -41,7 +41,7 @@ def get_all_employee_infomation():
         cnx.close()
     
     return all_employee_infomation
-"""
+
 def get_employee_infomation():
     employee_infomation = []
     try:
@@ -84,6 +84,14 @@ def delete_employee_info(delete_id):
     cursor.execute(delete_query)
     cnx.commit()
     return "削除しました"
+
+def add_new_employee_info():
+    cnx, cursor = get_db_cursor()
+    add_new_employee_query = F"INSERT INTO exployee_infomation (employee_id, employee_name, employee_age, gender, photo_id, adress, department_id) VALUES ('{employee_id}', '{employee_name}',{employee_age}, {gender}, '{photo_id}', '{adress}', '{department_id}')"
+    cursor.execute(add_new_employee_query)
+    add_new_employee_query = F"INSERT INTO department (department_id, department_name) VALUES ('{department_id}', '{department_name}')"
+    cursor.execute(add_new_employee_query)
+    cnx.commit()
 
 # 新規部署情報追加
 def add_department_info(new_department_name):

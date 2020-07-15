@@ -70,17 +70,31 @@ def search_managiment_employee():
 # 社員情報の編集・新規登録の表示用
 @app.route("/fix_employee", methods=["GET","POST"])
 def add_new_employee_infomation():
-    fix_employee_id = ""
-    if "change_infomation" in request.form.keys():
-        fix_employee_id = request.form.get("fix_employee_id")
     return render_template("fix_employee.html")
 
 # 社員情報の新規登録
 @app.route("/fix_employee/add", methods=["GET", "POST"])
 def add_new_employee():
-    #if "add_new_employee" in request.form.keys():
-        # 全要素取得
+    new_employee_id, new_employee_name, new_employee_age, gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date = "", "", "", "", "", "", "", "", "", "", ""
+    if "add_new_employee_infomation" in request.form.keys():
+        new_employee_id, new_employee_name, new_employee_age, gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date = get_new_all_employee_infomation()
+        #all_employee_infomation = db.get_all_employee_infomation()
     return redirect(url_for('employee_top'))
+
+# 社員情報の新規情報取得
+def get_new_all_employee_infomation():
+    new_employee_id = request.form.get("new_employee_id")
+    new_employee_name = request.form.get("new_employee_name")
+    new_employee_age = request.form.get("new_employee_age")
+    gender = request.form.get("gender")
+    file_name = request.files["file_name"]
+    new_postalcode = request.form.get("new_postalcode")
+    new_prefectures = request.form.get("new_prefectures")
+    new_adress = request.form.get("new_adress")
+    new_department = request.form.get("new_department")
+    update_join_date = request.form.get("update_join_date")
+    update_leave_date = request.form.get("update_leave_date")
+    return new_employee_id, new_employee_name, new_employee_age, gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date
 
 # search employee.htmlの表示用
 @app.route("/search/managiment", methods=["POST","GET"])

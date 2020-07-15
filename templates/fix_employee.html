@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>社員データを修正します</h1>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" action="/fix_employee/add">
             社員ID：<input name=new_employee_id>
             <br>名前：<input name=new_employee_name>
             <br>年齢：<input name=new_employee_age>
@@ -67,14 +67,14 @@
                 <option value="47">沖縄県</option>
             </select>
             <br>住所：<input name=new_adress>
-            <select value="new_department">
+            <select name="new_department">
                 <!-- 部署をlist化してfor文で -->
                 <option value="営業">営業</option>
             </select>
-            <br>入社日：<input name="join_date">
-            <br>退社日：<input name="leave_date">
-            <br><button type="submit" value="add_new_employee_employee_infomation">設定</button>
-            <button type="button" onclick="history.back()">戻る</button>
+            <br>入社日：<input name="update_join_date">
+            <br>退社日：<input name="update_leave_date">
+            <br><button type="submit" name="add_new_employee_infomation">設定</button>    
         </form>
+        <button type="button" onclick="history.back()">戻る</button>
     </body>
 </html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>結果</title>
+    </head>
+    <body>
+        
+        {% if check_mes %}
+            <p>データベースへの登録に失敗しました…
+            <br>{{ check_mes }}</p>
+        {% endif %}
+        {% if check_mes == "" %}
+            <p>データベースへの登録が完了しました！</p>
+        {% endif %}
+
+        <form method="post" action="/">
+            <button type="submit">トップページに戻る</button>
+        </form>
+    </body>
+</html>

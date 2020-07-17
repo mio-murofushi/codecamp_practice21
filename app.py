@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
-import re
+import re, os
 from mysql.connector import errorcode
 import model.database as db
 from model.employee import Employee
@@ -58,11 +58,6 @@ def get_search_employee_infomation(department_infomation):
         search_employee_name = request.form.get("search_employee_name")
         #check_search_employee_infomation(search_department_name, search_employee_id, search_employee_name)
 
-# 検索情報の
-"""
-def check_search_employee_infomation(search_department_name, search_employee_id, search_employee_name):
-"""
-
 @app.route("/search/result")
 def search_managiment_employee():
     return render_template("search_managiment_employee.html")
@@ -70,23 +65,41 @@ def search_managiment_employee():
 # 社員情報の編集・新規登録の表示用
 @app.route("/fix_employee", methods=["GET","POST"])
 def add_new_employee_infomation():
-    return render_template("fix_employee.html")
+    department_infomation = db.get_department_infomation()
+    params = {
+        "department_infomation" : department_infomation
+    }    
+    return render_template("fix_employee.html", **params)
 
 # 社員情報の新規登録
 @app.route("/fix_employee/add", methods=["GET", "POST"])
 def add_new_employee():
-    new_employee_id, new_employee_name, new_employee_age, gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date = "", "", "", "", "", "", "", "", "", "", ""
+    new_employee_id, new_employee_name, new_employee_age, new_gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date = "", "", "", "", "", "", "", "", "", "", ""
+    result_mes = "失敗"
+    check_mes = ""
+    
     if "add_new_employee_infomation" in request.form.keys():
-        new_employee_id, new_employee_name, new_employee_age, gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date = get_new_all_employee_infomation()
-        #all_employee_infomation = db.get_all_employee_infomation()
-    return redirect(url_for('employee_top'))
+        # 社員情報の新規情報の取得
+        new_employee_id, new_employee_name, new_employee_age, new_gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date = get_new_all_employee_infomation()
+        # 社員情報の新規情報の形式確認
+        check_mes = check_new_all_employee_infomation(new_employee_id, new_employee_name, new_employee_age, new_gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date)
+        if check_mes=="":
+            all_employee_infomation = db.get_all_employee_infomation()
+            new_photo_id = db.get_photo_infomation()
+            connect_adress = connect_adress_info(new_postalcode, new_adress)
+            result_mes = db.add_new_employee_info(new_employee_id, new_employee_name, new_employee_age, new_gender, new_photo_id, file_name, connect_adress, new_department, update_join_date, update_leave_date)
+            file_name.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name.filename))
+        if not update_leave_date == "":
+            db.add_leave_date(update_leave_date, new_employee_id)
+            
+    return redirect(url_for('result_add_employee', check_mes=check_mes, reslut_mes=result_mes))
 
 # 社員情報の新規情報取得
 def get_new_all_employee_infomation():
     new_employee_id = request.form.get("new_employee_id")
     new_employee_name = request.form.get("new_employee_name")
     new_employee_age = request.form.get("new_employee_age")
-    gender = request.form.get("gender")
+    new_gender = request.form.get("new_gender")
     file_name = request.files["file_name"]
     new_postalcode = request.form.get("new_postalcode")
     new_prefectures = request.form.get("new_prefectures")
@@ -94,7 +107,40 @@ def get_new_all_employee_infomation():
     new_department = request.form.get("new_department")
     update_join_date = request.form.get("update_join_date")
     update_leave_date = request.form.get("update_leave_date")
-    return new_employee_id, new_employee_name, new_employee_age, gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date
+    return new_employee_id, new_employee_name, new_employee_age, new_gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date
+
+# 社員情報の新規情報の形式検査
+def check_new_all_employee_infomation(new_employee_id, new_employee_name, new_employee_age, new_gender, file_name, new_postalcode, new_prefectures, new_adress, new_department, update_join_date, update_leave_date):
+    if new_employee_id=="" or new_employee_name == "" or new_employee_age=="" or new_gender=="" or file_name=="" or new_postalcode=="" or new_prefectures=="" or new_adress=="" or new_department=="" or update_join_date=="":
+        return "未入力の欄が存在しています。"
+    if not re.match(r'^EMP+[0-9]{4}', new_employee_id):
+        return "社員番号の表記が違います。"
+    if not re.match(r'[0-9]{2}', new_employee_age):
+        return "正しい年齢を入力してください"
+    if new_gender=="":
+        return "性別を選択してください。"
+    if not re.match(r'([^\s]+(\.(?i)(jpeg|png))$)', file_name.filename):
+        return "写真ファイルの拡張子を確認してください。"
+    if not re.match(r'[0-9]{3}-[0-9]{4}', new_postalcode):
+        return "郵便番号の形式を確認してください"
+    if not re.match(r'[0-9]{4}-[0-9]{2}-[0-9]{2}', update_join_date):
+        return "入社日の形式を確認して下さい"
+    if not re.match(r'[0-9]{4}-[0-9]{2}-[0-9]{2}', update_leave_date):
+        return "退社日の形式を確認して下さい"
+    return ""
+
+# 住所の接続。
+def connect_adress_info(new_postalcode, new_adress):
+    connect_adress = ""
+    connect_adress = "〒"+new_postalcode+" "+new_adress
+    print(connect_adress)
+    return connect_adress
+
+# 社員情報の新規登録結果
+@app.route("/fix_employee/add/result", methods=["GET","POST"])
+def result_add_employee():
+    return render_template("result_add.html", check_mes = request.args.get("check_mes"))
+
 
 # search employee.htmlの表示用
 @app.route("/search/managiment", methods=["POST","GET"])

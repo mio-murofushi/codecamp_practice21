@@ -22,7 +22,7 @@ class Employee:
         所属している部署No.
     """
     
-    def __init__(self, id="", employee_id="", employee_name="", employee_age="", gender="", photo_id="", adress="", department_id=""):
+    def __init__(self, id="", employee_id="", employee_name="", employee_age="", gender="", photo_id="", adress="", department_id="", join_date="", leave_date=""):
         self.id = id
         self.employee_id = employee_id
         self.employee_name = employee_name
@@ -31,3 +31,5 @@ class Employee:
         self.photo_id = photo_id
         self.adress = adress
         self.department_id = department_id
+        self.join_date = join_date
+        self.leave_date = leave_date

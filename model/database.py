@@ -78,6 +78,31 @@ def get_department_infomation():
     
     return department_infomation
 
+def get_photo_infomation():
+    photo_infomation=[]
+    try:
+        cnx, cursor = get_db_cursor()
+        get_photo_query = ("SELECT photo_id, photo_name FROM ID_photo ORDER BY photo_id DESC LIMIT 1")
+        cursor.execute(get_photo_query)
+        
+        for (now_photo_id, now_photo_name) in cursor:
+            new_photo_id = check_new_photo_id(now_photo_id)
+
+    except mysql.connector.Error as err:
+        printerror(err)
+    else:
+        cnx.close()
+    
+    return new_photo_id 
+
+# 新規社員情報の追加の際に写真idの取得
+def check_new_photo_id(now_photo_id):
+    max_number = re.sub("\\D", "", now_photo_id)
+    new_number = int(max_number) + 1
+    new_number = str(new_number)
+    new_photo_id = "P" + new_number.zfill(5)
+    return new_photo_id
+
 def delete_employee_info(delete_id):
     cnx, cursor = get_db_cursor()
     delete_query = F"DELETE FROM employee_infomation WHERE id = {delete_id}"
@@ -85,12 +110,20 @@ def delete_employee_info(delete_id):
     cnx.commit()
     return "削除しました"
 
-def add_new_employee_info():
+# 新規社員情報の追加
+def add_new_employee_info(new_employee_id, new_employee_name, new_employee_age, new_gender, new_photo_id, file_name, connect_adress, new_department, update_join_date, update_leave_date):
     cnx, cursor = get_db_cursor()
-    add_new_employee_query = F"INSERT INTO exployee_infomation (employee_id, employee_name, employee_age, gender, photo_id, adress, department_id) VALUES ('{employee_id}', '{employee_name}',{employee_age}, {gender}, '{photo_id}', '{adress}', '{department_id}')"
+    add_new_employee_query = F"INSERT INTO employee_infomation (employee_id, employee_name, employee_age, gender, photo_id, adress, department_id, join_date) VALUES ('{new_employee_id}', '{new_employee_name}',{new_employee_age}, '{new_gender}', '{new_photo_id}', '{connect_adress}', '{new_department}', '{update_join_date}')"
     cursor.execute(add_new_employee_query)
-    add_new_employee_query = F"INSERT INTO department (department_id, department_name) VALUES ('{department_id}', '{department_name}')"
-    cursor.execute(add_new_employee_query)
+    add_new_photo_query = F"INSERT INTO ID_photo (photo_id, photo_name) VALUES ('{new_photo_id}','{file_name.filename}')"
+    cursor.execute(add_new_photo_query)
+    cnx.commit()
+
+# 退社日の追加
+def add_leave_date(update_leave_date, new_employee_id):
+    cnx, cursor = get_db_cursor()
+    add_leave_date_query = F"UPDATE employee_infomation SET leave_date = '{update_leave_date}' WHERE employee_id = '{new_employee_id}'"
+    cursor.execute(add_leave_date_query)
     cnx.commit()
 
 # 新規部署情報追加
@@ -106,13 +139,14 @@ def add_department_info(new_department_name):
         add_department_query = F"INSERT INTO department (department_id, department_name) VALUES ('{new_department_id}','{new_department_name}')"
         cursor.execute(add_department_query)
         cnx.commit()
+        result_mes = "成功"
 
     except mysql.connector.Error as err:
         printerror(err)
     else:
         cnx.close()
     
-    return "新規部署の登録が完了しました"
+    return result_mes
 
 # 新規部署idを決定
 def check_new_department_id(department_id):

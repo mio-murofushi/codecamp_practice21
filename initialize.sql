@@ -11,7 +11,7 @@ CREATE TABLE employee_infomation(
     adress VARCHAR(100),
     department_id VARCHAR(10),
     join_date datetime,
-    leave_date datetime
+    leave_date datetime,
     PRIMARY KEY (id)
 );
 

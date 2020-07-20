@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>条件を指定して社員情報を検索します。</h1>
-        <form method="post">
+        <form method="post" action="/search/result">
             <select name="search_department">
                 <option value="">部署を選択してください</option>
                 {% for department_info in department_infomation%}

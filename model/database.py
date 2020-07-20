@@ -4,7 +4,7 @@ from mysql.connector import errorcode
 from model.const import DB
 from model.employee import Employee
 from model.department import Department
-from model.photo import  Photo
+from model.photo import Photo
 
 def get_db_cursor():
     cnx = mysql.connector.connect(
@@ -26,11 +26,12 @@ def get_all_employee_infomation():
     all_employee_infomation = []
     try:
         cnx, cursor = get_db_cursor()
-        query="SELECT employee_infomation.employee_id, employee_infomation.employee_name, employee_infomation.employee_age, employee_infomation.gender, employee_infomation.photo_id, employee_infomation.adress, employee_infomation.department_id, department.department_name, ID_photo.photo_name FROM employee_infomation JOIN department ON employee_infomation.department_id = department.department_id JOIN ID_photo ON employee_infomation.photo_id = ID_photo.photo_id"
+        query = "SELECT employee_infomation.employee_id, employee_infomation.employee_name, employee_infomation.employee_age, employee_infomation.gender, employee_infomation.photo_id, employee_infomation.adress, employee_infomation.department_id, department.department_name, ID_photo.photo_name FROM employee_infomation JOIN department ON employee_infomation.department_id = department.department_id JOIN ID_photo ON employee_infomation.photo_id = ID_photo.photo_id"
         cursor.execute(query)
 
         for (employee_id, employee_name, employee_age, gender, photo_id, adress, department_id, department_name, photo_name) in cursor:
-            employee = Employee(employee_id=employee_id, employee_name=employee_name, employee_age=employee_age, gender=gender, photo_id=photo_id, adress=adress, department_id=department_id)
+            employee = Employee(employee_id=employee_id, employee_name=employee_name, employee_age=employee_age,
+                                gender=gender, photo_id=photo_id, adress=adress, department_id=department_id)
             department = Department(department_id=department_id)
             photo = Photo(photo_name=photo_name)
             all_employee_infomation.append(employee)
@@ -39,52 +40,142 @@ def get_all_employee_infomation():
         printerror(err)
     else:
         cnx.close()
-    
+
     return all_employee_infomation
+
+def get_select_employee_infomation(fix_employee_id):
+    select_employee_infomation = []
+    can_get_fix_infomation= ""
+    try:
+        cnx, cursor = get_db_cursor()
+        query = F"SELECT employee_infomation.employee_id, \
+                    employee_infomation.employee_name, \
+                    employee_infomation.employee_age, \
+                    employee_infomation.gender, \
+                    employee_infomation.photo_id,\
+                    employee_infomation.adress, \
+                    employee_infomation.department_id, \
+                    employee_infomation.join_date, \
+                    ID_photo.photo_name \
+                FROM employee_infomation \
+                JOIN ID_photo \
+                ON employee_infomation.photo_id = ID_photo.photo_id \
+                WHERE employee_id = '{fix_employee_id}'"
+        cursor.execute(query)
+        
+        for (employee_id, employee_name, employee_age, gender, photo_id, adress, department_id, join_date, photo_name) in cursor:
+            fix_employee_id = employee_id
+            fix_employee_name = employee_name
+            fix_employee_age = employee_age
+            fix_gender = gender
+            fix_photo_id = photo_id
+            fix_adress = adress
+            fix_department_id = department_id
+            fix_join_date = join_date
+            fix_photo_name = photo_name
+            fix_postalcode, fix_adress, fix_prefectures = get_select_adress_infomation(fix_adress)
+            can_get_fix_infomation = "情報の取得が完了しました。"
+
+    except mysql.connector.Error as err:
+        printerror(err)
+    else:
+        cnx.close()
+
+    return can_get_fix_infomation, fix_employee_id, fix_employee_name, fix_employee_age, fix_gender, fix_photo_id, fix_department_id, fix_join_date, fix_photo_name, fix_postalcode, fix_adress, fix_prefectures
+
+# 既存社員の住所を分解
+def get_select_adress_infomation(fix_adress):
+    fix_postalcode, new_adress, new_prefectures = "", "", ""
+    fix_postalcode = re.sub("\\D", "", fix_adress)
+    fix_postalcode = '〒' + str(fix_postalcode)[0:3] + '-' + str(fix_postalcode)[3:]
+    new_prefect = re.sub("\\d", "", fix_adress)
+    new_prefect = new_prefect.replace('〒', '')
+    new_prefect = new_prefect.replace('- ', '')
+    new_prefectures = re.search(r'.+?[都|道|府|県]', new_prefect)
+    new_prefectures = new_prefectures.group()
+    new_adress = new_prefect.strip(new_prefectures)
+
+    return fix_postalcode, new_adress, new_prefectures
+
+def get_department_name(fix_department_id):
+    department_infomation = []
+    try:
+        cnx, cursor = get_db_cursor()
+        get_department_query = (
+            F"SELECT department_id, department_name FROM department WHERE department_id = '{fix_department_id}'")
+        cursor.execute(get_department_query)
+        for (department_id, department_name) in cursor:
+            fix_department_name = department_name
+    except mysql.connector.Error as err:
+        printerror(err)
+    else:
+        cnx.close()
+    return fix_department_name
+
+def get_photo_name(fix_photo_id):
+    photo_infomation = []
+    try:
+        cnx, cursor = get_db_cursor()
+        get_photo_query = (
+            F"SELECT photo_id, photo_name FROM ID_photo WHERE photo_id = '{fix_photo_id}'")
+        cursor.execute(get_photo_query)
+        for (photo_id, photo_name) in cursor:
+            fix_photo_name = photo_name
+    except mysql.connector.Error as err:
+        printerror(err)
+    else:
+        cnx.close()
+    return fix_photo_name
 
 def get_employee_infomation():
     employee_infomation = []
     try:
         cnx, cursor = get_db_cursor()
-        query=("SELECT id, employee_id, employee_name FROM employee_infomation")
+        query = ("SELECT id, employee_id, employee_name FROM employee_infomation")
         cursor.execute(query)
 
         for (id, employee_id, employee_name) in cursor:
-            employee = Employee( id=id, employee_id = employee_id, employee_name = employee_name)
+            employee = Employee(id=id, employee_id=employee_id,
+                                employee_name=employee_name)
             employee_infomation.append(employee)
 
     except mysql.connector.Error as err:
         printerror(err)
     else:
         cnx.close()
-    
+
     return employee_infomation
+
 
 def get_department_infomation():
     department_infomation = []
     try:
         cnx, cursor = get_db_cursor()
-        get_department_query = ("SELECT department_id, department_name FROM department")
+        get_department_query = (
+            "SELECT department_id, department_name FROM department")
         cursor.execute(get_department_query)
-        
+
         for (department_id, department_name) in cursor:
-            department_info = Department(department_id=department_id, department_name=department_name)
+            department_info = Department(
+                department_id=department_id, department_name=department_name)
             department_infomation.append(department_info)
 
     except mysql.connector.Error as err:
         printerror(err)
     else:
         cnx.close()
-    
+
     return department_infomation
 
+
 def get_photo_infomation():
-    photo_infomation=[]
+    photo_infomation = []
     try:
         cnx, cursor = get_db_cursor()
-        get_photo_query = ("SELECT photo_id, photo_name FROM ID_photo ORDER BY photo_id DESC LIMIT 1")
+        get_photo_query = (
+            "SELECT photo_id, photo_name FROM ID_photo ORDER BY photo_id DESC LIMIT 1")
         cursor.execute(get_photo_query)
-        
+
         for (now_photo_id, now_photo_name) in cursor:
             new_photo_id = check_new_photo_id(now_photo_id)
 
@@ -92,8 +183,7 @@ def get_photo_infomation():
         printerror(err)
     else:
         cnx.close()
-    
-    return new_photo_id 
+    return new_photo_id
 
 # 新規社員情報の追加の際に写真idの取得
 def check_new_photo_id(now_photo_id):
@@ -103,6 +193,7 @@ def check_new_photo_id(now_photo_id):
     new_photo_id = "P" + new_number.zfill(5)
     return new_photo_id
 
+
 def delete_employee_info(delete_id):
     cnx, cursor = get_db_cursor()
     delete_query = F"DELETE FROM employee_infomation WHERE id = {delete_id}"
@@ -111,6 +202,8 @@ def delete_employee_info(delete_id):
     return "削除しました"
 
 # 新規社員情報の追加
+
+
 def add_new_employee_info(new_employee_id, new_employee_name, new_employee_age, new_gender, new_photo_id, file_name, connect_adress, new_department, update_join_date, update_leave_date):
     cnx, cursor = get_db_cursor()
     add_new_employee_query = F"INSERT INTO employee_infomation (employee_id, employee_name, employee_age, gender, photo_id, adress, department_id, join_date) VALUES ('{new_employee_id}', '{new_employee_name}',{new_employee_age}, '{new_gender}', '{new_photo_id}', '{connect_adress}', '{new_department}', '{update_join_date}')"
@@ -120,6 +213,8 @@ def add_new_employee_info(new_employee_id, new_employee_name, new_employee_age, 
     cnx.commit()
 
 # 退社日の追加
+
+
 def add_leave_date(update_leave_date, new_employee_id):
     cnx, cursor = get_db_cursor()
     add_leave_date_query = F"UPDATE employee_infomation SET leave_date = '{update_leave_date}' WHERE employee_id = '{new_employee_id}'"
@@ -127,10 +222,13 @@ def add_leave_date(update_leave_date, new_employee_id):
     cnx.commit()
 
 # 新規部署情報追加
+
+
 def add_department_info(new_department_name):
     try:
         cnx, cursor = get_db_cursor()
-        get_department_new_info = ("SELECT * FROM department ORDER BY department_id DESC LIMIT 1")
+        get_department_new_info = (
+            "SELECT * FROM department ORDER BY department_id DESC LIMIT 1")
         cursor.execute(get_department_new_info)
 
         for (now_department_id, now_department_name) in cursor:
@@ -145,20 +243,23 @@ def add_department_info(new_department_name):
         printerror(err)
     else:
         cnx.close()
-    
+
     return result_mes
 
 # 新規部署idを決定
+
+
 def check_new_department_id(department_id):
     max_number = re.sub("\\D", "", department_id)
     new_number = int(max_number) + 1
-    
-    if int(new_number) <10:
+
+    if int(new_number) < 10:
         new_number = "D0" + str(new_number)
     else:
         new_number = "D" + str(new_number)
-    
+
     return new_number
+
 
 def delete_department_info(delete_department_id):
     cnx, cursor = get_db_cursor()
@@ -167,7 +268,8 @@ def delete_department_info(delete_department_id):
     cnx.commit()
     return "削除"
 
-def fix_department_rename( fix_department_id, department_rename):
+
+def fix_department_rename(fix_department_id, department_rename):
     cnx, cursor = get_db_cursor()
     rename_query = F"UPDATE department SET department_name = '{department_rename}' WHERE department_id = '{fix_department_id}'"
     cursor.execute(rename_query)
